@@ -4,33 +4,30 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	var max int
+	a := readFile()
+	sort.Ints(a)
 
-	// Find the biggest value
-	for _, value := range readFile() {
-		if value > max {
-			max = value
-		}
-	}
-
-	fmt.Println(max)
+	fmt.Printf("Part 1: %d\n", a[len(a)-1])
+	fmt.Printf("Part 2: %d\n", a[len(a)-1]+a[len(a)-2]+a[len(a)-3])
 }
 
-func readFile() map[int]int {
-	var i int
-	a := make(map[int]int)
+func readFile() []int {
+	var cont int
+	var a []int
 
 	f, _ := os.Open("input.txt")
 	bytes, _ := io.ReadAll(f)
 
 	for _, l := range strings.Split(string(bytes), "\n") {
 		if "" == strings.TrimSpace(l) {
-			i++
+			a = append(a, cont)
+			cont = 0
 		}
 
 		n, err := strconv.Atoi(l)
@@ -38,7 +35,7 @@ func readFile() map[int]int {
 			n = 0
 		}
 
-		a[i] += n
+		cont += n
 	}
 
 	return a
